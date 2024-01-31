@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "TestProject\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{92E670DF-0030-4ED1-832E-03DA61BBAA0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{FFAA42FF-5312-4D2D-A1CB-C2FDAAD1D841}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +23,15 @@ Global
 		{92E670DF-0030-4ED1-832E-03DA61BBAA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92E670DF-0030-4ED1-832E-03DA61BBAA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92E670DF-0030-4ED1-832E-03DA61BBAA0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFAA42FF-5312-4D2D-A1CB-C2FDAAD1D841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFAA42FF-5312-4D2D-A1CB-C2FDAAD1D841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFAA42FF-5312-4D2D-A1CB-C2FDAAD1D841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFAA42FF-5312-4D2D-A1CB-C2FDAAD1D841}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1854C9E-412D-4AB9-9D46-7A8D8D63D177}
 	EndGlobalSection
 EndGlobal

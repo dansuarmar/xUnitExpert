@@ -1,7 +1,7 @@
 using ClassLibrary;
 using Xunit.Abstractions;
 
-namespace TestProject;
+namespace TestProject.ClassLibraryTests;
 
 public class CalculatorAsyncTests : IAsyncLifetime
 {
@@ -26,7 +26,7 @@ public class CalculatorAsyncTests : IAsyncLifetime
         //Assert
         Assert.Equal(16, result);
     }
-    
+
     [Fact]
     public void Subtract_ShouldSubstract_WhenTwoInts()
     {
