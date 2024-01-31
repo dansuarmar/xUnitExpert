@@ -1,14 +1,15 @@
 using ClassLibrary;
 using Xunit.Abstractions;
+using FluentAssertions;
 
 namespace TestProject;
 
-public class CalculatorWithTheory_Tests : IDisposable
+public class CalculatorWithFluentTests : IDisposable
 {
     private readonly Calculator _sut = new();
     private readonly ITestOutputHelper _outputHelper;
 
-    public CalculatorWithTheory_Tests(ITestOutputHelper outputHelper)
+    public CalculatorWithFluentTests(ITestOutputHelper outputHelper)
     {
         _outputHelper = outputHelper;
         _outputHelper.WriteLine("This is the Setup");
@@ -29,8 +30,11 @@ public class CalculatorWithTheory_Tests : IDisposable
         //Act
         var result = _sut.Add(a, b);
 
-        //Assert
+        //XInit Assert
         Assert.Equal(expected, result);
+
+        //Fluent Assertions
+        result.Should().Be(expected);
     }
     
     [Theory(Skip = "Skiping this for test.")]
@@ -45,6 +49,7 @@ public class CalculatorWithTheory_Tests : IDisposable
 
         //Assert
         Assert.Equal(expected, result);
+        result.Should().Be(expected);
     }
 
     public void Dispose()

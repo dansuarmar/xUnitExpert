@@ -3,12 +3,12 @@ using Xunit.Abstractions;
 
 namespace TestProject;
 
-public class Calculator_Tests : IDisposable
+public class CalculatorTests : IDisposable
 {
     private readonly Calculator _sut = new();
     private readonly ITestOutputHelper _outputHelper;
 
-    public Calculator_Tests(ITestOutputHelper outputHelper)
+    public CalculatorTests(ITestOutputHelper outputHelper)
     {
         _outputHelper = outputHelper;
         _outputHelper.WriteLine("This is the Setup");

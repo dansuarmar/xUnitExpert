@@ -3,12 +3,12 @@ using Xunit.Abstractions;
 
 namespace TestProject;
 
-public class CalculatorAsync_Tests : IAsyncLifetime
+public class CalculatorAsyncTests : IAsyncLifetime
 {
     private readonly Calculator _sut = new();
     private readonly ITestOutputHelper _outputHelper;
 
-    public CalculatorAsync_Tests(ITestOutputHelper outputHelper)
+    public CalculatorAsyncTests(ITestOutputHelper outputHelper)
     {
         _outputHelper = outputHelper;
         _outputHelper.WriteLine("This is the Setup from ctor");
