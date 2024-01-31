@@ -7,7 +7,7 @@ public class Calculator
         return x + y;
     }
 
-    public int Substract(int x, int y) 
+    public int Subtract(int x, int y) 
     {
         return x - y;
     }

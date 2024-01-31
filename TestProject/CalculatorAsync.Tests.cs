@@ -3,15 +3,15 @@ using Xunit.Abstractions;
 
 namespace TestProject;
 
-public class Calculator_Tests : IDisposable
+public class CalculatorAsync_Tests : IAsyncLifetime
 {
     private readonly Calculator _sut = new();
     private readonly ITestOutputHelper _outputHelper;
 
-    public Calculator_Tests(ITestOutputHelper outputHelper)
+    public CalculatorAsync_Tests(ITestOutputHelper outputHelper)
     {
         _outputHelper = outputHelper;
-        _outputHelper.WriteLine("This is the Setup");
+        _outputHelper.WriteLine("This is the Setup from ctor");
     }
 
     [Fact]
@@ -40,8 +40,17 @@ public class Calculator_Tests : IDisposable
         Assert.Equal(7, result);
     }
 
-    public void Dispose()
+    //Async Initialization
+    public async Task InitializeAsync()
     {
-        _outputHelper.WriteLine("This is the Cleanup");
+        _outputHelper.WriteLine("This is the Setup from InitializeAsync");
+        await Task.Delay(1);
+    }
+
+    //Async Cleanup
+    public async Task DisposeAsync()
+    {
+        _outputHelper.WriteLine("This is the Cleanup from DisposeAsync");
+        await Task.Delay(1);
     }
 }
