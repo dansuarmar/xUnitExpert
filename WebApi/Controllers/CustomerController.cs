@@ -37,20 +37,26 @@ namespace WebApi.Controllers
 
         // POST api/<CustomerController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] Customer customer)
         {
+            var resp = await _customerService.AddAsync(customer);
+            return Ok(resp);
         }
 
         // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] Customer customer)
         {
+            var resp = await _customerService.UpdateAsync(customer);
+            return Ok(resp);
         }
 
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var resp = await _customerService.DeleteAsync(id);
+            return Ok(true);
         }
     }
 }

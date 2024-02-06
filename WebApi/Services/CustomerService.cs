@@ -50,7 +50,7 @@ namespace WebApi.Services
             var sw = Stopwatch.StartNew();
             try
             {
-                var customer = await _repository.GetById(id);
+                var customer = await _repository.GetByIdAsync(id);
                 return customer;
             }
             catch(Exception ex)
@@ -67,8 +67,22 @@ namespace WebApi.Services
 
         public async Task<Customer> AddAsync(Customer customer)
         {
-            _logger.LogInformation("AddAsync Called");
-            return await _repository.Add(customer);
+            _logger.LogInformation("Creating new customer with id {0}", customer.Id);
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                return await _repository.Add(customer);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong when creating customer with id {0}.", customer.Id);
+                throw;
+            }
+            finally
+            {
+                sw.Stop();
+                _logger.LogInformation("Customer with Id {1} created in {0}ms", sw.ElapsedMilliseconds, customer.Id);
+            }
         }
 
         public async Task<Customer> UpdateAsync(Customer customer)
@@ -79,8 +93,22 @@ namespace WebApi.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            _logger.LogInformation("DeleteAsync Called");
-            return await _repository.Delete(id);
+            _logger.LogInformation("Deleting customer with id {0}", id);
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                return await _repository.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong when deleting customer with id {0}.", id);
+                throw;
+            }
+            finally
+            {
+                sw.Stop();
+                _logger.LogInformation("Customer with Id {1} deleted in {0}ms", sw.ElapsedMilliseconds, id);
+            }
         }
     }
 }

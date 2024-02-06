@@ -7,7 +7,7 @@ namespace WebApi.Repositories
         Task<Customer> Add(Customer customer);
         Task<bool> Delete(int id);
         Task<IEnumerable<Customer>> GetAllAsync();
-        Task<Customer?> GetById(int id);
+        Task<Customer?> GetByIdAsync(int id);
         Task<Customer> Update(Customer customer);
     }
 }

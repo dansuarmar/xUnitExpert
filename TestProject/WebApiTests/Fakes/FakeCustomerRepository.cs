@@ -29,7 +29,7 @@ namespace TestProject.WebApiTests.Fakes
             return Task.FromResult(_customerList as IEnumerable<Customer>);
         }
 
-        public Task<Customer?> GetById(int id)
+        public Task<Customer?> GetByIdAsync(int id)
         {
             return Task.FromResult(_customerList.FirstOrDefault(x => x.Id == id));
         }

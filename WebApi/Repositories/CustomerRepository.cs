@@ -39,7 +39,7 @@ namespace WebApi.Repositories
             return _customers;
         }
 
-        public async Task<Customer?> GetById(int id)
+        public async Task<Customer?> GetByIdAsync(int id)
         {
             await Task.Delay(0);
             Customer? customer = _customers.FirstOrDefault(x => x.Id == id);
