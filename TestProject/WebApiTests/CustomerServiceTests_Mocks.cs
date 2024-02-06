@@ -231,5 +231,19 @@ namespace TestProject.WebApiTests
             await result.Should().ThrowAsync<Exception>().WithMessage("Test Exception");
             _logger.Received(1).LogError(Arg.Is(exception), Arg.Is("Something went wrong when creating customer with id {0}."), customer.Id);
         }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldCall_Delete()
+        {
+            //Arrange
+            var id = 1;
+            _repository.Delete(1).Returns(true);
+
+            //Act
+            var result = await _sut.DeleteAsync(id);
+
+            result.Should().BeTrue();
+            await _repository.Received(1).Delete(id);
+        }
     }
 }
