@@ -29,9 +29,10 @@ namespace WebApi.Controllers
 
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var customer = await _customerService.GetByIdAsync(id);
+            return customer is not null ? Ok(customer) : NotFound();
         }
 
         // POST api/<CustomerController>
