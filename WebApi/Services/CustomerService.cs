@@ -2,24 +2,46 @@
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.AspNetCore.Http.HttpResults;
 using WebApi.Repositories;
+using System.Diagnostics;
 
 namespace WebApi.Services
 {
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _repository;
-        private readonly ILogger<CustomerService> _logger;
+        private readonly ILoggerAdapter<CustomerService> _logger;
 
-        public CustomerService(ICustomerRepository repository)
+        public CustomerService(ICustomerRepository repository, ILoggerAdapter<CustomerService>? logger = default)
         {
             _repository = repository;
-            _logger = new Logger<CustomerService>(new LoggerFactory());
+
+            if (logger is null)
+            {
+                var realLogger = new Logger<CustomerService>(new LoggerFactory());
+                _logger = new LoggerAdapter<CustomerService>(realLogger);
+            }
+            else
+                _logger = logger;
         }
 
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            _logger.LogInformation("GetAllAsync Called");
-            return await _repository.GetAllAsync();
+            _logger.LogInformation("Retriving all Customers.");
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                return await _repository.GetAllAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Something went wrong when retriving Customers.");
+                throw;
+            }
+            finally
+            {
+                sw.Stop();
+                _logger.LogInformation("Customers retrived in {0}ms", sw.ElapsedMilliseconds);
+            }
         }
 
         public async Task<Customer?> GetByIdAsync(int id)

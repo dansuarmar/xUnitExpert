@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Printing;
+using WebApi.Entities;
 using WebApi.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,9 +12,9 @@ namespace WebApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly CustomerService _customerService;
+        private readonly ICustomerService _customerService;
         private readonly ILogger<CustomerController> _logger;
-        public CustomerController(CustomerService customerService, ILogger<CustomerController> logger)
+        public CustomerController(ICustomerService customerService, ILogger<CustomerController> logger)
         {
             _customerService = customerService;
             _logger = logger;
@@ -20,9 +22,9 @@ namespace WebApi.Controllers
 
         // GET: api/<CustomerController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(await _customerService.GetAllAsync()) ;
         }
 
         // GET api/<CustomerController>/5

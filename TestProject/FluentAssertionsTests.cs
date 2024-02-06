@@ -135,10 +135,11 @@ namespace TestProject
 
         public class ObjectWithEvent 
         {
-            public event EventHandler ExampleEvent;
+            public event EventHandler? ExampleEvent;
             public virtual void RaiseExampleEvent() 
             {
-                ExampleEvent(this, EventArgs.Empty);
+                if(ExampleEvent is not null)
+                    ExampleEvent(this, EventArgs.Empty);
             }
         }
         [Fact]
