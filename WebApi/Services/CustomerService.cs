@@ -46,8 +46,23 @@ namespace WebApi.Services
 
         public async Task<Customer?> GetByIdAsync(int id)
         {
-            _logger.LogInformation("GetByIdAsync Called");
-            return await _repository.GetById(id);
+            _logger.LogInformation("Retriving customer with Id {0}", id);
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                var customer = await _repository.GetById(id);
+                return customer;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Something went wrong when retriving customer with Id {0}.", id);
+                throw;
+            }
+            finally
+            {
+                sw.Stop();
+                _logger.LogInformation("Customer with Id {1} retrived in {0}ms", sw.ElapsedMilliseconds, id);
+            }
         }
 
         public async Task<Customer> AddAsync(Customer customer)
