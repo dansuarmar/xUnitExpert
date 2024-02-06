@@ -13,6 +13,7 @@ using Castle.Core.Logging;
 using WebApi;
 using NSubstitute.Core.Arguments;
 using NSubstitute.ExceptionExtensions;
+using NSubstitute.ReturnsExtensions;
 
 namespace TestProject.WebApiTests
 {
@@ -106,8 +107,7 @@ namespace TestProject.WebApiTests
         public async Task GetByIdAsync_ShouldReturnNull_WhenNoCustomerExist()
         {
             //Arrange
-            Customer? customer = null;
-            _repository.GetByIdAsync(4).Returns(customer);
+            _repository.GetByIdAsync(Arg.Any<int>()).ReturnsNull();
 
             //Act
             var customers = await _sut.GetByIdAsync(4);
@@ -128,13 +128,14 @@ namespace TestProject.WebApiTests
             };
 
             //Arrange
-            _repository.GetByIdAsync(1).Returns(customer);
+            _repository.GetByIdAsync(customer.Id).Returns(customer);
 
             //Act
-            var customerResponse = await _sut.GetByIdAsync(1);
+            var customerResponse = await _sut.GetByIdAsync(customer.Id);
 
             //Assert
             customerResponse.Should().NotBeNull();
+            customerResponse.Should().BeEquivalentTo(customer);
             customerResponse?.Name.Should().Be("name");
         }
 
@@ -151,7 +152,7 @@ namespace TestProject.WebApiTests
 
             //Assert
             _logger.Received(1).LogInformation("Retriving customer with Id {0}", Arg.Any<int>()); //This 2 calls do exactly the same validation.
-            _logger.Received(1).LogInformation(Arg.Is("Customer with Id {1} retrived in {0}ms"), Arg.Any<long>(), id);
+            _logger.Received(1).LogInformation(Arg.Is("Customer with Id {1} retrived in {0}ms"), Arg.Any<long>(), Arg.Is(id));
         }
 
         [Fact]
@@ -233,7 +234,7 @@ namespace TestProject.WebApiTests
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldCall_Delete()
+        public async Task DeleteAsync_ShouldDeleteUser_WhenDelete()
         {
             //Arrange
             var id = 1;
@@ -243,6 +244,20 @@ namespace TestProject.WebApiTests
             var result = await _sut.DeleteAsync(id);
 
             result.Should().BeTrue();
+            await _repository.Received(1).Delete(id);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldNotDeleteUser_UserDoesntExist()
+        {
+            //Arrange
+            var id = 1;
+            _repository.Delete(1).Returns(false);
+
+            //Act
+            var result = await _sut.DeleteAsync(id);
+
+            result.Should().BeFalse();
             await _repository.Received(1).Delete(id);
         }
     }
