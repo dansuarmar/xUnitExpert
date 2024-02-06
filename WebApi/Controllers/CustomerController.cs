@@ -13,11 +13,9 @@ namespace WebApi.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-        private readonly ILogger<CustomerController> _logger;
-        public CustomerController(ICustomerService customerService, ILogger<CustomerController> logger)
+        public CustomerController(ICustomerService customerService)
         {
             _customerService = customerService;
-            _logger = logger;
         }
 
         // GET: api/<CustomerController>
@@ -40,7 +38,11 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Post([FromBody] Customer customer)
         {
             var resp = await _customerService.AddAsync(customer);
-            return Ok(resp);
+
+            if(resp is null)
+                return BadRequest();
+
+            return CreatedAtAction(nameof(Get), new { id = customer.Id }, customer);
         }
 
         // PUT api/<CustomerController>/5
