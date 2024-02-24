@@ -49,8 +49,8 @@ namespace WebApi.Repositories
         public async Task<Customer> Add(Customer customer)
         {
             await Task.Delay(0);
-            var nextId = _customers.LastOrDefault(x => x.Id == customer.Id);
-            customer.Id = nextId?.Id ?? 1;
+            var nextId = _customers.LastOrDefault();
+            customer.Id = nextId is null ? 1 : nextId.Id + 1;
             _customers.Add(customer);
             return customer;
         }
