@@ -9,13 +9,13 @@ using WebApi;
 
 namespace WebApiTestsIntegration
 {
-    public class CustomerControllerTests
+    public class CustomerControllerTestsSimple
     {
 
         private readonly WebApplicationFactory<IApiMarker> _appFactory = new();
         private readonly HttpClient _httpClient;
 
-        public CustomerControllerTests()
+        public CustomerControllerTestsSimple()
         {
             _httpClient = _appFactory.CreateClient();
         }
