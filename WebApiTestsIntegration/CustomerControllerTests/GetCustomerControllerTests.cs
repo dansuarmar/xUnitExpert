@@ -7,7 +7,8 @@ using WebApi;
 
 namespace WebApiTestsIntegration;
 
-public class GetCustomerControllerTests : IClassFixture<WebApplicationFactory<IApiMarker>>
+[Collection("HttpServerCollection")]
+public class GetCustomerControllerTests
 {
     private readonly WebApplicationFactory<IApiMarker> _appFactory;
     private readonly HttpClient _httpClient;

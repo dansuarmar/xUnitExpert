@@ -6,7 +6,8 @@ using WebApi.Entities;
 
 namespace WebApiTestsIntegration;
 
-public class PostCustomerControllerTests : IClassFixture<WebApplicationFactory<IApiMarker>>, IAsyncLifetime
+[Collection("HttpServerCollection")]
+public class PostCustomerControllerTests : IAsyncLifetime
 {
     private readonly WebApplicationFactory<IApiMarker> _appFactory;
     private readonly HttpClient _httpClient;
