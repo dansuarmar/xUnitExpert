@@ -1,6 +1,10 @@
-﻿using FluentAssertions;
+﻿using Bogus;
+using Bogus.Extensions;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.ProjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +13,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using WebApi;
+using WebApi.Entities;
 
 namespace WebApiTestsIntegration
 {
@@ -17,6 +22,12 @@ namespace WebApiTestsIntegration
 
         private readonly WebApplicationFactory<IApiMarker> _appFactory;
         private readonly HttpClient _httpClient;
+        private readonly Faker<Customer> _fakeCustomerGenetator = new Faker<Customer>()
+            .RuleFor(m => m.Name, faker => faker.Person.FullName)
+            .RuleFor(m => m.Id, faker => faker.Database.Random.Int())
+            .RuleFor(m => m.Credit, faker => faker.Finance.Random.Decimal())
+            .RuleFor(m => m.CreatedDate, DateTime.Now)
+            ;
 
         public CustomerControllerTests_ClassFixture(WebApplicationFactory<IApiMarker> appFactory)
         {
@@ -25,7 +36,22 @@ namespace WebApiTestsIntegration
         }
 
         [Fact]
-        public async Task Get_ReturnsCustomer_WhenExists()
+        public async Task Post_ReturnsOk_WhenNewCustomerCreated()
+        {
+            //Arrange
+            var customer = _fakeCustomerGenetator.Generate();
+
+            //Act
+            var response = await _httpClient.PostAsJsonAsync($"/api/customer/", customer);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            var customerResponse = await response.Content.ReadFromJsonAsync<Customer>();
+            customerResponse.Should().BeEquivalentTo(customer);
+        }
+
+        [Fact]
+        public async Task Get_ReturnsCustomer_WhenCustomerExists()
         {
             //Arrange
             //Act
@@ -33,7 +59,6 @@ namespace WebApiTestsIntegration
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-
             //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
