@@ -13,4 +13,10 @@ public class PostCustomerTests_RealWorld : IClassFixture<CustomerApiFactory>
         _appFactory = appFactory;
         _httpClient = appFactory.CreateClient();
     }
+
+    [Fact]
+    public async Task DbInitializationTest()
+    {
+        await Task.Delay(10000);
+    }
 }

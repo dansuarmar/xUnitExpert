@@ -32,9 +32,9 @@
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
-            "dockerServerReadyAction": {
-                "uriFormat": "%s://localhost:%s/WeatherForecast"
-            },
+            // "dockerServerReadyAction": {
+            //     "uriFormat": "%s://localhost:%s/WebApi"
+            // },
             "netCore": {
                 "appProject": "${workspaceFolder}/WebApi/WebApi.csproj"
             }
