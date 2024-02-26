@@ -17,7 +17,7 @@ public class CustomerApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifet
         .WithDatabase("mydb")
         .WithUsername("workshop")
         .WithPassword("changeme")
-        .WithPortBinding(5432)
+        //.WithPortBinding(5432) //It's random, its provided with the ConnectionString generated.
         .Build();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -30,7 +30,7 @@ public class CustomerApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifet
         builder.ConfigureTestServices(services => 
         {
             services.RemoveAll(typeof(IDbConnectionFactory));
-            services.AddSingleton<IDbConnectionFactory>(_ => new NpgsqlConnectionFactory("Server=localhost;Port=5432;Database=mydb;User ID=course;Password=changeme;"));
+            services.AddSingleton<IDbConnectionFactory>(_ => new NpgsqlConnectionFactory(_dbContainer.GetConnectionString()));
         });
     }
 
@@ -44,3 +44,13 @@ public class CustomerApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifet
         await _dbContainer.DisposeAsync();
     }
 }
+
+// private readonly TestcontainersContainer _dbContainer =
+//     new TestcontainersBuilder<TestcontainersContainer>()
+//         .WithImage("postgres:latest")
+//         .WithEnvironment("POSTGRES_USER", "course")
+//         .WithEnvironment("POSTGRES_PASSWORD", "changeme")
+//         .WithEnvironment("POSTGRES_DB", "mydb")
+//         .WithPortBinding(5555, 5432)
+//         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+//         .Build();
